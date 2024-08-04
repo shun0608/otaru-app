@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: otaru
+
+  api:
+    build: .
+    command: uvicorn api.main:api --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgres://user:password@db/otaru
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
