@@ -8,9 +8,12 @@ from typing import Union
 
 from fastapi import FastAPI
 
-DATABASE_URL = "postgres://user:password@db/otaru"
+from api.routers import login, register
 
 app = FastAPI()
+
+app.include_router(login.router)
+app.include_router(register.router)
 
 
 @app.get("/")
