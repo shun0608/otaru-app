@@ -9,10 +9,11 @@ readme = "README.md"
 python = "^3.12"
 pydantic = "^2.8.2"
 fastapi = "^0.112.0"
-uvicorn = {extras = ["standerd"], version = "^0.30.4"}
+uvicorn = {extras = ["standerd"], version = "^0.30.5"}
 alembic = "^1.13.2"
 sqlalchemy = "^2.0.31"
 databases = {extras = ["asyncpg"], version = "^0.9.0"}
+psycopg2-binary = "^2.9.9"
 
 
 [tool.poetry.group.dev.dependencies]
