@@ -1,3 +1,8 @@
+"""
+This module provides functionality to reset the database by dropping \
+all tables and recreating them.
+"""
+
 from sqlalchemy import create_engine
 
 from api.models.user import Base
