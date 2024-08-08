@@ -5,13 +5,13 @@
 
 <div>
 	<h1>ログイン</h1>
-	<form action="">
+	<form>
 		<div>
-			<label for="">メールアドレス</label>
+			<label>メールアドレス</label>
 			<input type="mail" />
 		</div>
 		<div>
-			<label for="">パスワード</label>
+			<label>パスワード</label>
 			<input type="password" />
 		</div>
 		<button>ログイン</button>

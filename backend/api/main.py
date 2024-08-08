@@ -7,13 +7,24 @@ This module contains a FastAPI application with two endpoints:
 from typing import Union
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-from api.routers import login, register
+from api.routers import login, user
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],  # 許可するオリジンをリストで指定
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(login.router)
-app.include_router(register.router)
+app.include_router(user.router)
 
 
 @app.get("/")
