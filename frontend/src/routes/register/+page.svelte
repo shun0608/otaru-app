@@ -2,20 +2,39 @@
 	let name: string = '';
 	let email: string = '';
 	let password: string = '';
+	let message: string = '';
 
-	async function register() {
-		const res = await fetch('http://localhost:8000/register', {
+	async function fetchUser() {
+		const response = await fetch('http://localhost:8000/register', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				name: name,
-				email: email,
-				password: password
+				name,
+				email,
+				password
 			})
 		});
-		console.log(res);
+		return response;
+	}
+
+	async function register() {
+		try {
+			const registrationResult = await fetchUser();
+			const data = await registrationResult.json();
+			if (data.message == 'duplicate') {
+				throw new Error('入力されたメールアドレスは既に登録されています。');
+			}
+			// ここに、登録後の処理を記載する
+		} catch (e) {
+			if (e instanceof Error) {
+				message = e.message;
+			} else {
+				message =
+					'登録処理中に予期しないエラーが発生しました。お手数ですが、再度登録処理を行ってください。';
+			}
+		}
 	}
 </script>
 
@@ -41,4 +60,8 @@
 		</div>
 		<button type="button" on:click={register}>ユーザー登録</button>
 	</form>
+
+	<p>
+		{message}
+	</p>
 </div>
