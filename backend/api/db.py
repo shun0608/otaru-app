@@ -7,19 +7,12 @@ and a function to provide a database session.
 from typing import AsyncGenerator
 
 from fastapi import Depends
-from fastapi_users.db import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
+from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
+
+from api.models.user import User
 
 DB_URL = "postgresql+asyncpg://user:password@db:5432/otaru"
-
-
-class Base(DeclarativeBase):
-    pass
-
-
-class User(SQLAlchemyBaseUserTableUUID, Base):
-    pass
 
 
 engine = create_async_engine(DB_URL)
