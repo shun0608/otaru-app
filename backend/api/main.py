@@ -6,10 +6,14 @@ This module contains a FastAPI application with two endpoints:
 
 from typing import Union
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routers import login, user
+from api.db import User
+from api.schemas.user import UserCreate, UserRead, UserUpdate
+from api.services.user_service import auth_backend, current_active_user, fastapi_users
+
+# from api.routers import auth, user
 
 app = FastAPI()
 
@@ -23,8 +27,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(login.router)
-app.include_router(user.router)
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"]
+)
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
+app.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)
+
+
+@app.get("/authenticated-route")
+async def authenticated_route(user: User = Depends(current_active_user)):
+    return {"message": f"Hello {user.email}!"}
 
 
 @app.get("/")

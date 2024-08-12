@@ -5,7 +5,7 @@
 	let message: string = '';
 
 	async function fetchUser() {
-		const response = await fetch('http://localhost:8000/register', {
+		const response = await fetch('http://localhost:8000/auth/register', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -23,7 +23,7 @@
 		try {
 			const registrationResult = await fetchUser();
 			const data = await registrationResult.json();
-			if (data.message == 'duplicate') {
+			if (data.detail == 'REGISTER_USER_ALREADY_EXISTS') {
 				throw new Error('入力されたメールアドレスは既に登録されています。');
 			}
 			// ここに、登録後の処理を記載する
