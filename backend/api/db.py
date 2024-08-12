@@ -4,24 +4,32 @@ It includes the database URL configuration, engine creation, session setup,
 and a function to provide a database session.
 """
 
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from typing import AsyncGenerator
+
+from fastapi import Depends
+from fastapi_users.db import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase
 
 DB_URL = "postgresql://user:password@db:5432/otaru"
 
-db_engine = create_engine(DB_URL, echo=True)
-db_session = sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
 
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 
-def get_db():
-    """
-    Provide a transactional scope around a series of operations.
+class User(SQLAlchemyBaseUserTableUUID, Base):
+    pass
 
-    Yields:
-        session (Session): SQLAlchemy session object.
-    """
-    with db_session() as session:
+
+engine = create_async_engine(DB_URL)
+async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+
+
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_maker() as session:
         yield session
+
+
+async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+    yield SQLAlchemyUserDatabase(session, User)
