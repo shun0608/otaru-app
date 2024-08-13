@@ -2,10 +2,21 @@
 	import { onMount } from 'svelte';
 	import maplibregl from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
+	import toast, { Toaster } from 'svelte-french-toast';
+	import { displayLoginMessage } from '../components/store/store';
+	import { displayRegisterMessage } from '../components/store/store';
 
 	let map: maplibregl.Map;
 
 	onMount(() => {
+		if ($displayLoginMessage) {
+			toast.success('ログインしました');
+			displayLoginMessage.set(false);
+		} else if ($displayRegisterMessage) {
+			toast.success('ユーザー登録が完了しました');
+			displayRegisterMessage.set(false);
+		}
+
 		map = new maplibregl.Map({
 			container: 'map',
 			zoom: 5,
@@ -49,5 +60,7 @@
 	<title>小樽観光マップ</title>
 	<meta name="description" content="小樽の観光マップ" />
 </svelt:head>
+
+<Toaster />
 
 <div id="map" style="height: 100svh;"></div>
