@@ -13,28 +13,26 @@ from api.db import User
 from api.schemas.user import UserCreate, UserRead, UserUpdate
 from api.services.user_service import auth_backend, current_active_user, fastapi_users
 
-# from api.routers import auth, user
-
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-    ],  # 許可するオリジンをリストで指定
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 app.include_router(
-    fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"]
-)
-app.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/auth",
+    fastapi_users.get_auth_router(auth_backend),
     tags=["auth"],
 )
+
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    tags=["auth"],
+)
+
 app.include_router(
     fastapi_users.get_users_router(UserRead, UserUpdate),
     prefix="/users",

@@ -19,9 +19,6 @@ class UserResponseData(BaseModel):
     name: str
     email: str
 
-    class Config:
-        orm_mode = True
-
 
 class UserCreateResponse(BaseModel):
     status: str
