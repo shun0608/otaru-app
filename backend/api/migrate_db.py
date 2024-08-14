@@ -5,7 +5,7 @@ all tables and recreating them.
 
 from sqlalchemy import create_engine
 
-from api.models.user import Base
+from api.models.base import Base
 
 DB_URL = "postgresql://user:password@db:5432/otaru"
 engine = create_engine(DB_URL, echo=True)

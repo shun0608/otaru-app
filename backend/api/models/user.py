@@ -4,8 +4,8 @@ It includes the User and Post models and the database session configuration.
 """
 
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
-from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime, timezone, timedelta
+from api.models.base import Base
 
 # 日本時間 (JST) は UTC+9
 JST = timezone(timedelta(hours=9))
@@ -13,10 +13,6 @@ JST = timezone(timedelta(hours=9))
 
 def jst_now():
     return datetime.now(JST)
-
-
-class Base(DeclarativeBase):
-    pass
 
 
 class User(Base):
