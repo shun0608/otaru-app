@@ -19,8 +19,8 @@
 
 		map = new maplibregl.Map({
 			container: 'map',
-			zoom: 5,
-			center: [138, 37],
+			zoom: 14,
+			center: [140.993717, 43.197692],
 			minZoom: 5,
 			maxZoom: 18,
 			maxBounds: [122, 20, 154, 50],
@@ -47,10 +47,10 @@
 		});
 		let popup = new maplibregl.Popup({
 			offset: 25, // ポップアップの位置
-			closeButton: false // 閉じるボタンの表示
+			closeButton: true // 閉じるボタンの表示
 		}).setText('テストマーカー');
 		let marker = new maplibregl.Marker()
-			.setLngLat([139.70356, 35.65901])
+			.setLngLat([140.993717, 43.197692])
 			.setPopup(popup)
 			.addTo(map);
 	});
